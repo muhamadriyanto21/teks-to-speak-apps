@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text-to-Speech App</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<style>
+  body {
+    background-color: #f0f0f0;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  .textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+  }
+  .btn {
+    margin-top: 10px;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1 class="mb-4">Speak Teks Apps</h1>
+  <p class="mb-2">Ini adalah aplikasi teks untuk membacakan bacaan yang kalian salin disini. copy saya teks kalian disini</p>
+  <textarea class="form-control textarea" id="text-input" placeholder="Masukkan teks di sini..."></textarea>
+  <button class="btn btn-primary" id="speak-button"><i class="fas fa-volume-up mr-2"></i>Bicarakan</button>
+  <button class="btn btn-danger" id="stop-button"><i class="fas fa-stop mr-2"></i>Hentikan</button>
+</div>
+<div class="footer">
+  <p>&copy; 2023 Developed by Riyan</p>
+</div>
+<script>
+  const speakButton = document.getElementById("speak-button");
+  const stopButton = document.getElementById("stop-button");
+  const textInput = document.getElementById("text-input");
+  let speaking = false;
+  let utterance;
+
+  speakButton.addEventListener("click", () => {
+    const text = textInput.value;
+    if (text !== "") {
+      speak(text);
+    }
+  });
+
+  stopButton.addEventListener("click", () => {
+    stop();
+  });
+
+  function speak(text) {
+    if (!speaking) {
+      utterance = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(utterance);
+      speaking = true;
+
+      utterance.onend = () => {
+        speaking = false;
+      };
+    }
+  }
+
+  function stop() {
+    if (speaking) {
+      speechSynthesis.cancel();
+      speaking = false;
+    }
+  }
+</script>
+</body>
+</html>
